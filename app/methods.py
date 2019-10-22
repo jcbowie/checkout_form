@@ -5,10 +5,9 @@ from oauth2client.service_account import ServiceAccountCredentials
 urllib3.disable_warnings()
 
 
-def task_pull(x):
-    url = 'https://shawdev.service-now.com/api/now/table/sc_task?sysparm_query=number%3D{}&sysparm_fields=number%2Cu_cost_center&sysparm_limit=1'.format(x)
-    user = 'AssetsCage'
-    pwd = 'A$$etsCag3'
+def task_pull(user, pwd, x):
+    url = 'https://shaw.service-now.com/api/now/table/sc_task?sysparm_query=' \
+          'number%3D{}&sysparm_fields=number%2Cu_cost_center&sysparm_limit=1'.format(x)
     headers = {"Content-Type": "application/json", "Accept": "application/json"}
     response = requests.get(url, auth=(user, pwd), headers=headers, verify=False)
     result = response.json()['result']
@@ -17,10 +16,9 @@ def task_pull(x):
     return taskid, cost_center
 
 
-def serial_num(y):
-    url = 'https://shawdev.service-now.com/api/now/table/cmdb_ci?sysparm_query=serial_number%3D{}&sysparm_fields=serial_number%2Cmodel_id%2Casset_tag&sysparm_limit=1'.format(y)
-    user = 'AssetsCage'
-    pwd = 'A$$etsCag3'
+def serial_num(user, pwd, y):
+    url = 'https://shaw.service-now.com/api/now/table/cmdb_ci?sysparm_query=' \
+          'serial_number%3D{}&sysparm_fields=serial_number%2Cmodel_id%2Casset_tag&sysparm_limit=1'.format(y)
     headers = {"Content-Type": "application/json", "Accept": "application/json"}
     response = requests.get(url, auth=(user, pwd), headers=headers, verify=False)
     result = response.json()['result']
@@ -30,15 +28,26 @@ def serial_num(y):
     return asset, serial, model
 
 
-def display_name(z):
-    url = 'https://shawdev.service-now.com/api/now/table/cmdb_hardware_product_model?sysparm_query=sys_id%3D{}&sysparm_fields=display_name&sysparm_limit=1'.format(z)
-    user = 'AssetsCage'
-    pwd = 'A$$etsCag3'
+def display_name(user, pwd, z):
+    url = 'https://shaw.service-now.com/api/now/table/cmdb_hardware_product_model?sysparm_query' \
+          '=sys_id%3D{}&sysparm_fields=display_name&sysparm_limit=1'.format(z)
     headers = {"Content-Type": "application/json", "Accept": "application/json"}
     response = requests.get(url, auth=(user, pwd), headers=headers, verify=False)
     result = response.json()['result']
     description = result[0]['display_name']
     return description
+
+
+def employee_info(user, pwd, badge):
+    url = 'https://shaw.service-now.com/api/now/table/cmdb_hardware_product_model?sysparm_query' \
+          '=sys_id%3D{}&sysparm_fields=display_name&sysparm_limit=1'.format(badge)
+    headers = {"Content-Type": "application/json", "Accept": "application/json"}
+    response = requests.get(url, auth=(user, pwd), headers=headers, verify=False)
+    result = response.json()['result']
+    employee_name = result[0]['name']
+    employee_cc = result[0]['cost_center']
+    employee_manager = result[0]['manager']
+    return employee_name, employee_cc, employee_manager
 
 
 def sheet(**args):
@@ -47,6 +56,3 @@ def sheet(**args):
     gc = gspread.authorize(credentials)
     wks = gc.open('Cage Test').sheet1
     return wks.append_row([args])
-
-
-

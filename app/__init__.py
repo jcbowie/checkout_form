@@ -5,7 +5,7 @@ app = Flask(__name__)
 app.config.from_object('asset_checkout.default_settings')
 app.config.from_envvar('ASSET_CHECKOUT_SETTINGS')
 user = app.config.from_envvar('ASSET_CHECKOUT_API_USER')
-password = app.config.from_envvar('ASSET_CHECKOUT_API_PASSWORD')
+pwd = app.config.from_envvar('ASSET_CHECKOUT_API_PASSWORD')
 
 if not app.debug:
     import logging
