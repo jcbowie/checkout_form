@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<body bgcolor="#7E7E7E">
+	<table style="color:white;" width="100&#37">
+		<tr><td align="right"></td></tr>
+		<tr>
+			<td align="center" height="500">
+				<font face="verdana" size="6">Asset Checkout Form</font><hr width="35&#37">
+				<form action="{{ url_for('handle_data') }}" method="post">
+                  <div class="container">
+                    <input type="text" name="taskid" placeholder="Task ID" required>
+                      <br>
+                    <input type="text" name="soa" placeholder="Serial Number or Asset Tag" required>
+                      <br>
+                    <input type="number" name="qty" placeholder="Quantity" required>
+                      <br><br>
+                    <input type="number" name="badge" placeholder="Employee ID (Use badge scanner)" required>
+                      <br><br>
+                    <button type="submit">Submit</button>
+                  </div>
+                </form>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>
